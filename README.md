@@ -1,2 +1,3 @@
 # RISC_V_CPU
 RISCV
+1-cycle
