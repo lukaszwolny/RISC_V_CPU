@@ -19,6 +19,6 @@ module adder #
 // output assignments
 //===========================================================================
 
-assign o_out = i_b + i_a;
+assign o_out = i_a + i_b;
 
 endmodule
