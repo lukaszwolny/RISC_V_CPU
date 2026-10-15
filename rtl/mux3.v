@@ -9,19 +9,20 @@ module mux3 #
 )
 (
     // inputs
-    input       [width-1:0] i_a,    
-    input       [width-1:0] i_b,    
-    input       [width-1:0] i_c,    
+    input       [width-1:0] i_a,    // a
+    input       [width-1:0] i_b,    // b
+    input       [width-1:0] i_c,    // c
     // sel
-    input       [1:0]       i_sel,  
+    input       [1:0]       i_sel,  // sel  
     // output
-    output reg  [width-1:0] o_out   
+    output reg  [width-1:0] o_out   // out
 );
 
 //===========================================================================
 // output assignments
 //===========================================================================
 
+// mux
 always @(*) begin
     case(i_sel)
         2'b00: o_out = i_a;

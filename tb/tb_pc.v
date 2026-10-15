@@ -117,6 +117,13 @@ module tb_pc;
             $finish;
         end
 
+        //wwwwww
+        i_branch_sel = 0;
+        i_pc_imm_sel = 0;
+
+        @(posedge i_clk);
+
+
         #1000;
         $display("All PC tests passed.");
         $finish;
