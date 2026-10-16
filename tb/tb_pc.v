@@ -122,7 +122,7 @@ module tb_pc;
         i_pc_imm_sel = 0;
 
         @(posedge i_clk);
-
+        
 
         #1000;
         $display("All PC tests passed.");
