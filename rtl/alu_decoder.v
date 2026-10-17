@@ -4,18 +4,24 @@ ALU Decoder
 //-----------------------------------------------------------------------------
 
 module alu_decoder (
-    // 
+    // controls
     input       [2:0]   i_f3,           // funct3 code instr
     input               i_f7,           // funct7 1 bit 
     input       [1:0]   i_alu_control,  // from main decoder instr type
-    // 
+    // output alu operation
     output reg  [3:0]   o_op            // alu operation output
 );
+
+//===========================================================================
+// output assignments
+//===========================================================================
 
 always @(*) begin
     case(i_alu_control)
         2'b00: begin
             case({i_f7, i_f3})
+                // o_op = {i_f7, i_f3};
+
                 // 4'b0000: o_op = {i_f7, i_f3}; //add  -
                 // 4'b1000: o_op = {i_f7, i_f3}; //sub  -
                 // 4'b0100: o_op = {i_f7, i_f3}; //xor -
