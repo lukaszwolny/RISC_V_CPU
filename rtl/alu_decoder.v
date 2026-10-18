@@ -49,7 +49,10 @@ always @(*) begin
         end
         2'b01: o_op = 4'b0000;//add
         2'b10: o_op = 4'b0001;//sub
-        2'b11: o_op = 4'b1000;//slt
+        2'b11: begin // branch - slt/sltu
+            //o_op = 4'b1000;//slt
+            o_op = (i_f3[1]) ? 4'b1001 : 4'b1000;
+        end
     endcase
 end
 

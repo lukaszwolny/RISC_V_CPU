@@ -6,7 +6,11 @@ Main Decoder
 module main_decoder (
     // input instr control
     input       [6:0]   i_op,                   // opcode
-    input               i_f3,                   // funct3 1 bit - msb
+    //input               i_f3,                   // funct3 1 bit - msb
+    input       [2:0]   i_f3,                   // funct3 1 bit - msb
+    // input flags
+    input               i_zero,    // 
+    input               i_alu_l_b, // 
     // output controls
     output reg          o_decoder_branch,       //     
     output reg  [1:0]   o_decoder_pc_imm_sel,   // pc_add_sel
@@ -17,6 +21,10 @@ module main_decoder (
     output reg  [1:0]   o_decoder_mux4_sel,     // 
     output reg  [1:0]   o_alu_control           // 
 );
+
+wire            funct3_bit;     // funct3 1 bit
+
+assign funct3_bit = i_f3[2];
 
 always @(*) begin
     o_decoder_branch        =   1'b0;
@@ -49,10 +57,20 @@ always @(*) begin
             o_alu_control = 2'b01;
         end
         7'b1100011: begin   //B-type
-            o_decoder_branch = 1'b1;
+            // branch decoder: 
+            case(i_f3)
+                3'b000: o_decoder_branch = i_zero;//if(zero) o_decoder_branch = 1'b1;  i_alu_l_b
+                3'b001: o_decoder_branch = ~i_zero;
+                3'b100: o_decoder_branch = i_alu_l_b;
+                3'b101: o_decoder_branch = ~i_alu_l_b;
+                3'b110: o_decoder_branch = i_alu_l_b;
+                3'b111: o_decoder_branch = ~i_alu_l_b;
+                default: o_decoder_branch = 1'b0;
+            endcase
+            // o_decoder_branch = 1'b1;
             o_decoder_pc_imm_sel = 2'b01;
             o_decoder_imm_type = 3'b010;
-            o_alu_control = (i_f3) ? 2'b11 : 2'b10;
+            o_alu_control = (funct3_bit) ? 2'b11 : 2'b10;
         end
         7'b1101111: begin   //J-type jal
             o_decoder_branch = 1'b1;
