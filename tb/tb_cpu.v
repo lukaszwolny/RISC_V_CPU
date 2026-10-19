@@ -18,11 +18,11 @@ integer i;
         rst = 0;
 
         // ===================================================
-        // Release reset after 2 cycles
+        
         repeat(2) @(posedge clk);
         rst = 1;
 
-        // Run for enough cycles for the loop to complete
+    
         // (9 instructions × loop 5 times + setup = ~30 cycles)
         repeat(50) @(posedge clk);
         #1;
