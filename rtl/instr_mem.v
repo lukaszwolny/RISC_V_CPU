@@ -26,7 +26,7 @@ reg [31:0]  mem [0:depth-1];    // instr mem
 
 // load program
 initial begin
-    $readmemb("../../mem/program_2.mem",mem);
+    $readmemb("../../mem/program_3.mem",mem);
 end
 
 //===========================================================================
