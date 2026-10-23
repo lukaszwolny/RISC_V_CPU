@@ -27,7 +27,7 @@ reg [31:0]  mem [0:depth-1];    // instr mem
 // load program
 initial begin
     // $readmemb("../../mem/program_bubble_sort.mem",mem);
-    $readmemh("../../mem/program_binarysearc.mem",mem);
+    $readmemh("../../mem/program_quicsort_stos.mem",mem);
 end
 
 //===========================================================================

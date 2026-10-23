@@ -1,0 +1,142 @@
+.data
+.align 2
+array:    .word 64, 34, 25, 12, 22, 11, 90, 45   # Nasza tablica (zajmuje adresy 0-31)
+length:   .word 8                                # Długość tablicy (adresy 32-35)
+
+.text
+.globl main
+main:
+    # =========================================================================
+    # JAWNA INICJALIZACJA STOSU DLA TWOJEJ PAMIĘCI (1024 bajty)
+    # =========================================================================
+    # sp na koniec pamięci (1024 = 0x400). Stos będzie rósł w dół.
+    li sp, 1024                   
+                                  
+
+    # Przygotowanie argumentów do wykonania Quicksort
+    la a0, array                  # a0 = adres bazowy tablicy
+    li a1, 0                      # a1 = indeks początkowy (start = 0)
+    
+    la t0, length                 # Załaduj adres zmiennej length
+    lw t0, 0(t0)                  # t0 = wartość length (8)
+    addi a2, t0, -1               # a2 = indeks końcowy (end = length - 1)
+    
+    # Wywołanie głównej funkcji sortującej
+    jal ra, quicksort
+
+end_program:
+    # Nieskończona pętla
+    j end_program
+
+
+# =========================================================================
+# Funkcja: quicksort
+# =========================================================================
+quicksort:
+    bge a1, a2, quicksort_done
+    
+    # Alokacja na stosie (pobiera pamięć z końca Twojego mem_data)
+    addi sp, sp, -20              
+    sw ra, 16(sp)                 
+    sw s0, 12(sp)                 
+    sw s1, 8(sp)                  
+    sw s2, 4(sp)                  
+    sw s3, 0(sp)                  
+    
+    mv s0, a0                     
+    mv s1, a1                     
+    mv s2, a2                     
+    
+    jal ra, partition
+    mv s3, a0                     
+    
+    # Rekurencja lewa
+    mv a0, s0                     
+    mv a1, s1                     
+    addi a2, s3, -1               
+    jal ra, quicksort
+    
+    # Rekurencja prawa
+    mv a0, s0                     
+    addi a1, s3, 1                
+    mv a2, s2                     
+    jal ra, quicksort
+    
+    # Dealokacja ze stosu
+    lw s3, 0(sp)
+    lw s2, 4(sp)
+    lw s1, 8(sp)
+    lw s0, 12(sp)
+    lw ra, 16(sp)                 
+    addi sp, sp, 20               
+    
+quicksort_done:
+    jalr zero, ra, 0              
+
+
+# =========================================================================
+# Funkcja: partition
+# =========================================================================
+partition:
+    addi sp, sp, -16              
+    sw ra, 12(sp)
+    sw s0, 8(sp)
+    sw s1, 4(sp)
+    sw s2, 0(sp)
+    
+    mv s0, a0                     
+    mv s1, a1                     
+    mv s2, a2                     
+    
+    slli t0, s2, 2                
+    add t0, s0, t0                
+    lw t0, 0(t0)                  
+    
+    addi t1, s1, -1               
+    mv t2, s1                     
+    
+partition_loop:
+    bge t2, s2, partition_done    
+    
+    slli t3, t2, 2                
+    add t3, s0, t3                
+    lw t4, 0(t3)                  
+    
+    bgt t4, t0, skip_swap         
+    
+    addi t1, t1, 1                
+    
+    slli t5, t1, 2                
+    add t5, s0, t5                
+    lw t6, 0(t5)                  
+    
+    sw t4, 0(t5)                  
+    sw t6, 0(t3)                  
+    
+skip_swap:
+    addi t2, t2, 1                
+    j partition_loop
+    
+partition_done:
+    addi t1, t1, 1                
+    
+    slli t3, t1, 2                
+    add t3, s0, t3                
+    lw t4, 0(t3)                  
+    
+    slli t5, s2, 2                
+    add t5, s0, t5                
+    lw t6, 0(t5)                  
+    
+    sw t6, 0(t3)                  
+    sw t4, 0(t5)                  
+    
+    mv a0, t1
+    
+    lw s2, 0(sp)
+    lw s1, 4(sp)
+    lw s0, 8(sp)
+    lw ra, 12(sp)
+    addi sp, sp, 16               
+    
+    jalr zero, ra, 0              

@@ -78,7 +78,7 @@ integer i;
         // ===================================================
 
         //quick sort
-        wait(u_cpu.u_datapath.u_pc.pc_r == 32'h0000006C);
+        wait(u_cpu.u_datapath.u_pc.pc_r == 32'h00000024);
         $display("--- final mem  Snapshot ---");
         for (i = 0; i < 52; i = i+4)
             $display("  x%0d = %0d", i, u_cpu.u_data_mem.mem_data[i]);    
