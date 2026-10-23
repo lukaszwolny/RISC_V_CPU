@@ -40,9 +40,10 @@ always @(*) begin
         7'b0110011: begin   //R-type
             o_decoder_we_reg = 1'b1;
         end
-        7'b0010011: begin   //I-type
+        7'b0010011: begin   //I-type alu
             o_decoder_we_reg = 1'b1;
             o_decoder_alu_src = 1'b1;
+            o_alu_control = 2'b11;
         end
         7'b0000011: begin   //I-type load
             o_decoder_we_reg = 1'b1;
@@ -70,7 +71,8 @@ always @(*) begin
             // o_decoder_branch = 1'b1;
             o_decoder_pc_imm_sel = 2'b01;
             o_decoder_imm_type = 3'b010;
-            o_alu_control = (funct3_bit) ? 2'b11 : 2'b10;
+            //o_alu_control = (funct3_bit) ? 2'b11 : 2'b10;
+            o_alu_control = 2'b10;
         end
         7'b1101111: begin   //J-type jal
             o_decoder_branch = 1'b1;

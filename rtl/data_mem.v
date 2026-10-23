@@ -32,6 +32,49 @@ reg [7:0]   mem_data    [0:(depth*4)-1];    // mem
 // internal logic
 //===========================================================================
 
+//sim
+//---
+// bubble
+// integer i;
+// initial begin
+//     for (i = 0; i < depth*4; i = i + 1)
+//         mem_data[i] = 8'h00;
+
+//     //array = 
+//     mem_data[0]  = 8'd64;
+//     mem_data[4]  = 8'd34;
+//     mem_data[8]  = 8'd25;
+//     mem_data[12] = 8'd12;
+//     mem_data[16] = 8'd22;
+//     mem_data[20] = 8'd11;
+//     mem_data[24] = 8'd90;
+//     // length = 5
+//     mem_data[28] = 8'd7;
+// end
+//---
+//binarysearch
+integer i;
+initial begin
+    for (i = 0; i < depth*4; i = i + 1)
+        mem_data[i] = 8'h00;
+
+    //array = 
+    mem_data[0]  = 8'd2;
+    mem_data[4]  = 8'd5;
+    mem_data[8]  = 8'd8;
+    mem_data[12] = 8'd12;
+    mem_data[16] = 8'd16;
+    mem_data[20] = 8'd23;
+    mem_data[24] = 8'd38;
+    mem_data[28] = 8'd56;
+    mem_data[32] = 8'd72;
+    mem_data[36] = 8'd91;
+    // length = 5
+    mem_data[40] = 8'd10;
+    mem_data[44] = 8'd56;
+end
+//---
+
 // write logic
 always @(posedge i_clk) begin
     if(i_write_en) begin
